@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.existingeevee.catatweaks.CatalystOverworldSkyRenderer;
+import com.existingeevee.catatweaks.renderers.sky.CatalystOverworldSkyRenderer;
 
 import net.minecraft.client.renderer.RenderGlobal;
 

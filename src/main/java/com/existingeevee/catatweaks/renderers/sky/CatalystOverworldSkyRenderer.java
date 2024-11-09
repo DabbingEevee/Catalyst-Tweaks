@@ -1,4 +1,6 @@
-package com.existingeevee.catatweaks;
+package com.existingeevee.catatweaks.renderers.sky;
+
+import com.existingeevee.catatweaks.CatalystTweaks;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
