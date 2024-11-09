@@ -19,7 +19,7 @@ public class CatalystOverworldSkyRenderer extends IRenderHandler {
 
 	public static final CatalystOverworldSkyRenderer INSTANCE = new CatalystOverworldSkyRenderer();
 	public static final ThreadLocal<Integer> PASS = ThreadLocal.withInitial(() -> 0);
-    public static final ResourceLocation NETHER_TEXTURES = new ResourceLocation(CatalystTweaks.MODID, "textures/nether.png");
+	public static final ResourceLocation NETHER_TEXTURES = new ResourceLocation(CatalystTweaks.MODID, "textures/nether.png");
 
 	private CatalystOverworldSkyRenderer() {
 	}
@@ -137,21 +137,18 @@ public class CatalystOverworldSkyRenderer extends IRenderHandler {
 		tessellator.draw();
 
 		GlStateManager.pushMatrix();
-		GlStateManager.rotate(10f, 1, 0, 2);
 		{
-			GlStateManager.pushMatrix();
+			GlStateManager.rotate(10f, 1, 0, 2);
 			GlStateManager.rotate(world.getCelestialAngle(partialTicks) * 360.0F * 8, 0, 1, 0);
-			{
-				f17 = 10F;
-				mc.renderEngine.bindTexture(NETHER_TEXTURES);
-				bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-				bufferbuilder.pos((double) (-f17), -100.0D, (double) f17).tex(0, 0).endVertex();
-				bufferbuilder.pos((double) f17, -100.0D, (double) f17).tex(1, 0).endVertex();
-				bufferbuilder.pos((double) f17, -100.0D, (double) (-f17)).tex(1, 1).endVertex();
-				bufferbuilder.pos((double) (-f17), -100.0D, (double) (-f17)).tex(0, 1).endVertex();
-				tessellator.draw();
-			}
-			GlStateManager.popMatrix();
+			f17 = 10F;
+			mc.renderEngine.bindTexture(NETHER_TEXTURES);
+			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+			bufferbuilder.pos((double) (-f17), -100.0D, (double) f17).tex(0, 0).endVertex();
+			bufferbuilder.pos((double) f17, -100.0D, (double) f17).tex(1, 0).endVertex();
+			bufferbuilder.pos((double) f17, -100.0D, (double) (-f17)).tex(1, 1).endVertex();
+			bufferbuilder.pos((double) (-f17), -100.0D, (double) (-f17)).tex(0, 1).endVertex();
+			tessellator.draw();
+
 		}
 		GlStateManager.popMatrix();
 

@@ -32,7 +32,6 @@ public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
 		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		RenderHelper.disableStandardItemLighting();
 		GlStateManager.depthMask(false);
-		GlStateManager.alphaFunc(516, 0.003921569F);
 
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
@@ -64,7 +63,7 @@ public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
 			if (k1 == 5) {
 				GlStateManager.rotate(-90.0F, 0.0F, 0.0F, 1.0F);
 			}
-
+			
 			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
 			bufferbuilder.pos(-100.0D, -100.0D, -100.0D).tex(0.0D, 0.0D).color(skyBrightness, skyBrightness, skyBrightness, 1f).endVertex();
 			bufferbuilder.pos(-100.0D, -100.0D, 100.0D).tex(0.0D, 16.0D).color(skyBrightness, skyBrightness, skyBrightness, 1f).endVertex();
@@ -73,21 +72,24 @@ public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
 			tessellator.draw();
 			GlStateManager.popMatrix();
 		}
-		float f16 = 1.0F - world.getRainStrength(partialTicks);		
-		float f15 = world.getStarBrightness(partialTicks) * f16;
-
-		if (f15 > 0.0F) {
-			GlStateManager.color(f15, f15, f15, f15);
-
-			if (global.vboEnabled) {
-				global.starVBO.bindBuffer();
-				GlStateManager.glEnableClientState(32884);
-				GlStateManager.glVertexPointer(3, 5126, 12, 0);
-				global.starVBO.drawArrays(7);
-				global.starVBO.unbindBuffer();
-				GlStateManager.glDisableClientState(32884);
-			} else {
-				GlStateManager.callList(global.starGLCallList);
+		
+		float starBrightness = 0.75f + 0.25f * (1 - smoothPct);
+		if (starBrightness > 0.0F) {
+			GlStateManager.color(starBrightness, starBrightness, starBrightness, starBrightness);
+			for (int i = 0; i < 3; i++) {
+				GlStateManager.pushMatrix();
+				GlStateManager.rotate(30 * i, 1, 1, 0);
+				if (global.vboEnabled) {
+					global.starVBO.bindBuffer();
+					GlStateManager.glEnableClientState(32884);
+					GlStateManager.glVertexPointer(3, 5126, 12, 0);
+					global.starVBO.drawArrays(7);
+					global.starVBO.unbindBuffer();
+					GlStateManager.glDisableClientState(32884);
+				} else {
+					GlStateManager.callList(global.starGLCallList);
+				}
+				GlStateManager.popMatrix();
 			}
 		}
 
@@ -95,7 +97,8 @@ public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
 		double magnitude = 100;
 		double height = 75;
 		int amount = 32;
-
+		float brightness = 0.275f;
+		
 		for (int i = 0; i < amount; i++) {
 			double x1 = Math.cos(Math.PI * 2 * i / 1d / amount) * magnitude;
 			double y1 = Math.sin(Math.PI * 2 * i / 1d / amount) * magnitude;
@@ -104,10 +107,10 @@ public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
 			double y2 = Math.sin(Math.PI * 2 * (i + 1) / 1d / amount) * magnitude;
 
 			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-			bufferbuilder.pos(x1, -height, y1).tex(0.0D, 0.0D).color(1f, 1f, 1f, 0.25f).endVertex();
-			bufferbuilder.pos(x2, -height, y2).tex(1.0D, 0.0D).color(1f, 1f, 1f, 0.25f).endVertex();
-			bufferbuilder.pos(x2, height, y2).tex(1.0D, 1.0D).color(1f, 1f, 1f, 0.25f).endVertex();
-			bufferbuilder.pos(x1, height, y1).tex(0.0D, 1.0D).color(1f, 1f, 1f, 0.25f).endVertex();
+			bufferbuilder.pos(x1, -height, y1).tex(0.0D, 0.0D).color(1f, 1f, 1f, brightness).endVertex();
+			bufferbuilder.pos(x2, -height, y2).tex(1.0D, 0.0D).color(1f, 1f, 1f, brightness).endVertex();
+			bufferbuilder.pos(x2, height, y2).tex(1.0D, 1.0D).color(1f, 1f, 1f, brightness).endVertex();
+			bufferbuilder.pos(x1, height, y1).tex(0.0D, 1.0D).color(1f, 1f, 1f, brightness).endVertex();
 			tessellator.draw();
 		}
 
@@ -127,7 +130,7 @@ public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
 		float green = (float) color.y;
 		float blue = (float) color.z;
 
-		magnitude = 175 + 50 * Math.cos(world.getCelestialAngle(partialTicks) * 2 * Math.PI * 32);
+		magnitude = 175 + 50 * Math.cos(world.getCelestialAngle(partialTicks) * 2 * Math.PI * 64);
 		mc.renderEngine.bindTexture(new ResourceLocation(CatalystTweaks.MODID, "textures/dreamscape/glow.png"));
 		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
 		bufferbuilder.pos(-magnitude, -height, -magnitude).tex(0.0D, 0.0D).color(red, green, blue, smoothPct).endVertex();
