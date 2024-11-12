@@ -15,7 +15,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
 
 public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
-
+	
 	public static final CatalystDreamscapeSkyRenderer INSTANCE = new CatalystDreamscapeSkyRenderer();
 	public static final ThreadLocal<Integer> PASS = ThreadLocal.withInitial(() -> 0);
 
@@ -25,13 +25,13 @@ public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {
 		RenderGlobal global = mc.renderGlobal;
-
-		GlStateManager.disableFog();
-		GlStateManager.disableAlpha();
-		GlStateManager.enableBlend();
-		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-		RenderHelper.disableStandardItemLighting();
-		GlStateManager.depthMask(false);
+		
+        GlStateManager.disableFog();
+        GlStateManager.disableAlpha();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.depthMask(false);
 
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
@@ -163,10 +163,11 @@ public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
 		bufferbuilder.pos(magnitude, -height, magnitude).tex(1.0D, 1.0D).color(1f, 1f, 1f, 1 - pct).endVertex();
 		bufferbuilder.pos(magnitude, -height, -magnitude).tex(1.0D, 0.0D).color(1f, 1f, 1f, 1 - pct).endVertex();
 		tessellator.draw();
-
+	
 		GlStateManager.popMatrix();
-		GlStateManager.depthMask(true);
-		GlStateManager.enableTexture2D();
-		GlStateManager.enableAlpha();
+		
+        GlStateManager.depthMask(true);
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableAlpha();
 	}
 }
