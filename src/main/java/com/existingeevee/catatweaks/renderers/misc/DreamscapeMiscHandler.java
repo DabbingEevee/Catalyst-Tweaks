@@ -6,8 +6,8 @@ import com.existingeevee.catatweaks.CatalystTweaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
-import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -44,22 +44,19 @@ public class DreamscapeMiscHandler {
 	}
 	
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public static void onFogDensity(FogDensity event) {
-		World world = Minecraft.getMinecraft().world;
-		if (world != null && world.provider.getDimension() == CataConstants.getDreamScapeID()) {
-			event.setDensity(0.05f); //WorldServer
-			event.setCanceled(true);
-		}
-	}
-	
-	@SubscribeEvent
 	public static void onWorldTick(TickEvent.WorldTickEvent event) {
-		if (event.phase != Phase.END) 
+		if (event.phase != Phase.END && CataConstants.getDreamScapeID() == event.world.provider.getDimension()) 
 			return;
 		
-		if (event.world.isRaining()) {
-			event.world.setRainStrength(0);
+		if (event.world.isRaining() || event.world.isThundering()) {
+            World world = event.world;
+            WorldInfo worldinfo = world.getWorldInfo();
+			
+            worldinfo.setCleanWeatherTime(1000000);
+            worldinfo.setRainTime(0);
+            worldinfo.setThunderTime(0);
+            worldinfo.setRaining(false);
+            worldinfo.setThundering(false);
 		}
 	}
 }

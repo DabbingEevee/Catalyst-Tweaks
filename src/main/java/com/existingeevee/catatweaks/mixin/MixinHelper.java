@@ -17,12 +17,11 @@ public class MixinHelper {
 	@Inject(method = "isMidnightDimension", at = @At(value = "HEAD"), cancellable = true, remap = false)
 	private static void catalyst_tweaks$HEAD_Inject$isMidnightDimension(World world, CallbackInfoReturnable<Boolean> ci) {
 		if (world != null && world.provider.getDimension() == CataConstants.getDreamScapeID()) {
-			StackTraceElement element = Thread.currentThread().getStackTrace()[2];
-
+			StackTraceElement element = Thread.currentThread().getStackTrace()[3];
 			if (element.getClassName().equals(ClientEventHandler.class.getName()) && element.getMethodName().equals("onSetupFogDensity")) {
-				ci.setReturnValue(true);
-			} else {
 				ci.setReturnValue(false);
+			} else {
+				ci.setReturnValue(true);
 			}
 		}
 	}

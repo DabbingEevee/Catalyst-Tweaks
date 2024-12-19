@@ -63,6 +63,8 @@ dependencies {
     
     implementation  'local:lostcities:1.12-2.0.22'
     implementation  'local:themidnight:0.3.5'
+    implementation 'amoogus:GameStages:1'
+    
     
    	//	implementation ("net.minecraftforge:mergetool:0.2.3.3") { force = true }
 }
