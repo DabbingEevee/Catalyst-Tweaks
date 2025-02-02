@@ -9,8 +9,6 @@ import com.existingeevee.catatweaks.CatalystTweaks;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -87,7 +85,7 @@ public final class CustomWorldSpawner {
 
 				int amount = world.getEntities(enigmothClass, e -> true).size();
 
-				if (amount < 6) {
+				if (amount < 4) {
 					double r = Math.random() * 5 + 20;
 					double theta = Math.random() * Math.PI * 2;
 
@@ -123,7 +121,6 @@ public final class CustomWorldSpawner {
 						int packSize = world.rand.nextInt(2) + 2;
 						for (int i = 0; i < packSize; i++) {
 							moth.onInitialSpawn(world.getDifficultyForLocation(pos), null);
-							moth.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 100));
 							world.spawnEntity(moth);
 							
 							moth = createEntity(world, pos, enigmothClass);
@@ -146,7 +143,7 @@ public final class CustomWorldSpawner {
 
 				int amount = world.getEntities(ghostrayClass, e -> true).size();
 
-				if (amount < 9) {
+				if (amount < 6) {
 					double r = Math.random() * 5 + 20;
 					double theta = Math.random() * Math.PI * 2;
 
@@ -156,7 +153,7 @@ public final class CustomWorldSpawner {
 					int x = (int) Math.round(player.posX + xOff);
 					int z = (int) Math.round(player.posZ + zOff);
 
-					int y = (int) Math.round(player.posY + Math.random() * 25);
+					int y = (int) Math.round(player.posY + Math.random() * 25 + 30);
 
 					BlockPos pos = new BlockPos(x, y, z);
 
@@ -179,11 +176,13 @@ public final class CustomWorldSpawner {
 					}
 
 					if (isSpawnValid) {
+						if (world.getChunk(pos).getLightFor(EnumSkyBlock.BLOCK, pos) > 4 || !(world.getWorldTime() > 13500 && world.getWorldTime() < 22500)) {
+							continue;
+						}
 						int packSize = world.rand.nextInt(2) + 3;
 						
 						for (int i = 0; i < packSize; i++) {
 							ray.onInitialSpawn(world.getDifficultyForLocation(pos), null);
-							ray.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 100));
 							world.spawnEntity(ray);
 							
 							ray = createEntity(world, pos, ghostrayClass);
