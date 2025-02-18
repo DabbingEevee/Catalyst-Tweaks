@@ -45,7 +45,7 @@ public class DreamscapeMiscHandler {
 	
 	@SubscribeEvent
 	public static void onWorldTick(TickEvent.WorldTickEvent event) {
-		if (event.phase != Phase.END && CataConstants.getDreamScapeID() != event.world.provider.getDimension()) 
+		if (event.phase != Phase.END || CataConstants.getDreamScapeID() != event.world.provider.getDimension()) 
 			return;
 		
 		if (event.world.isRaining() || event.world.isThundering()) {

@@ -85,7 +85,7 @@ public final class CustomWorldSpawner {
 
 				int amount = world.getEntities(enigmothClass, e -> true).size();
 
-				if (amount < 4) {
+				if (amount < 2) {
 					double r = Math.random() * 5 + 20;
 					double theta = Math.random() * Math.PI * 2;
 
@@ -118,7 +118,7 @@ public final class CustomWorldSpawner {
 					}
 
 					if (isSpawnValid) {
-						int packSize = world.rand.nextInt(2) + 2;
+						int packSize = world.rand.nextInt(1) + 1;
 						for (int i = 0; i < packSize; i++) {
 							moth.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 							world.spawnEntity(moth);
@@ -176,9 +176,11 @@ public final class CustomWorldSpawner {
 					}
 
 					if (isSpawnValid) {
-						if (world.getChunk(pos).getLightFor(EnumSkyBlock.BLOCK, pos) > 4 || !(world.getWorldTime() > 13500 && world.getWorldTime() < 22500)) {
+						
+						if ((pos.getY() > 0 && pos.getY() < 255) && world.getChunk(pos).getLightFor(EnumSkyBlock.BLOCK, pos) > 4 || !(world.getWorldTime() > 13500 && world.getWorldTime() < 22500)) {
 							continue;
 						}
+						
 						int packSize = world.rand.nextInt(2) + 3;
 						
 						for (int i = 0; i < packSize; i++) {
