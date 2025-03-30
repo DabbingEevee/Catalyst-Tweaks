@@ -121,10 +121,11 @@ public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
 		Vec3d colorCold = new Vec3d(1.000, 0.141, 0.000);
 		Vec3d colorHot = new Vec3d(0.997, 0.546, 0.221);
 
-		Vec3d color = new Vec3d(
-				colorHot.x * smoothPct + colorCold.x * (1 - smoothPct),
-				colorHot.y * smoothPct + colorCold.y * (1 - smoothPct),
-				colorHot.z * smoothPct + colorCold.z * (1 - smoothPct));
+		Vec3d color = colorHot.scale(smoothPct).add(colorCold.scale(1 - smoothPct));
+//		new Vec3d(
+//				colorHot.x * smoothPct + colorCold.x * (1 - smoothPct),
+//				colorHot.y * smoothPct + colorCold.y * (1 - smoothPct),
+//				colorHot.z * smoothPct + colorCold.z * (1 - smoothPct));
 
 		float red = (float) color.x;
 		float green = (float) color.y;
