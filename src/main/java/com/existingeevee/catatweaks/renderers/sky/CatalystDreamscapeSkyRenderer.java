@@ -122,6 +122,7 @@ public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
 		Vec3d colorHot = new Vec3d(0.997, 0.546, 0.221);
 
 		Vec3d color = colorHot.scale(smoothPct).add(colorCold.scale(1 - smoothPct));
+		
 //		new Vec3d(
 //				colorHot.x * smoothPct + colorCold.x * (1 - smoothPct),
 //				colorHot.y * smoothPct + colorCold.y * (1 - smoothPct),
@@ -149,7 +150,7 @@ public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
 		tessellator.draw();
 		
 		// draw the body
-		magnitude = 150;
+		magnitude = 250;
 		mc.renderEngine.bindTexture(new ResourceLocation(CatalystTweaks.MODID, "textures/dreamscape/nether_hot.png"));
 		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
 		bufferbuilder.pos(-magnitude, -height, -magnitude).tex(0.0D, 0.0D).color(1f, 1f, 1f, 1).endVertex();

@@ -1,23 +1,27 @@
 package com.existingeevee.catatweaks.event_listeners;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.existingeevee.catatweaks.CataConstants;
 import com.existingeevee.catatweaks.CatalystTweaks;
 
-import net.minecraft.entity.EntityList;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 @EventBusSubscriber(modid = CatalystTweaks.MODID)
 public final class CustomWorldSpawner {
+
+	public static boolean debugPrintln = true;
 
 	@SubscribeEvent
 	public static void onWorldTick(TickEvent.WorldTickEvent event) {
@@ -29,9 +33,15 @@ public final class CustomWorldSpawner {
 		if (world.getTotalWorldTime() % 20 == 0 && world.rand.nextInt(4) == 0) {
 
 			@SuppressWarnings("unchecked")
-			Class<EntityLiving> weepingAngelClass = (Class<EntityLiving>) EntityList.getClassFromName("weeping-angels:weepingangel");
+			Class<EntityLiving> weepingAngelClass = (Class<EntityLiving>) getClassFromName("weeping-angels:weepingangel");
+
+			if (debugPrintln)
+				System.out.println("Attempting angel spawn");
 
 			for (EntityPlayer player : getPlayers(world)) {
+
+				if (debugPrintln)
+					System.out.println("Attempting angel spawn for player: " + player.getUniqueID());
 
 				if (weepingAngelClass == null)
 					continue;
@@ -39,6 +49,10 @@ public final class CustomWorldSpawner {
 				int amount = world.getEntities(weepingAngelClass, e -> true).size();
 
 				if (amount < 120) {
+
+					if (debugPrintln)
+						System.out.println("Calculating angel spawn pos");
+
 					double r = Math.random() * 5 + 35;
 					double theta = Math.random() * Math.PI * 2;
 
@@ -57,9 +71,14 @@ public final class CustomWorldSpawner {
 
 					BlockPos pos = new BlockPos(x, surfaceY, z);
 					if (Math.abs(surfaceY - player.posY) > 25 || world.getChunk(pos).getLightFor(EnumSkyBlock.BLOCK, pos) > 0 || !(world.getWorldTime() > 13500 && world.getWorldTime() < 22500)) {
+
+						if (debugPrintln)
+							System.out.println("Invalid spawn position. aborting");
 						continue;
 					} else {
-						if (!world.getPlayers(EntityPlayer.class, p -> p.getDistanceSq(pos) <= 35 * 35).isEmpty()) {
+						if (!world.getPlayers(EntityPlayer.class, p -> p.getDistanceSq(pos) < 35 * 35).isEmpty()) {
+							if (debugPrintln)
+								System.out.println("Calculated spawn pos too close to players. aborting");
 							continue;
 						}
 
@@ -67,8 +86,18 @@ public final class CustomWorldSpawner {
 						if (world.getBlockState(pos.down()).canEntitySpawn(angel)) {
 							angel.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 							world.spawnEntity(angel);
+
+							if (debugPrintln)
+								System.out.println("angel spawn successful");
+
+						} else {
+							if (debugPrintln)
+								System.out.println("calculated spawn pos cannot place at position. aborting");
 						}
 					}
+				} else {
+					if (debugPrintln)
+						System.out.println("Too many angels. aborting.");
 				}
 			}
 		}
@@ -76,7 +105,7 @@ public final class CustomWorldSpawner {
 		if (world.getTotalWorldTime() % 20 == 0 && world.rand.nextInt(15) == 0) {
 
 			@SuppressWarnings("unchecked")
-			Class<EntityLiving> enigmothClass = (Class<EntityLiving>) EntityList.getClassFromName("mod_lavacow:enigmoth"); // 
+			Class<EntityLiving> enigmothClass = (Class<EntityLiving>) getClassFromName("mod_lavacow:enigmoth"); //
 
 			for (EntityPlayer player : getPlayers(world)) {
 
@@ -99,7 +128,7 @@ public final class CustomWorldSpawner {
 
 					BlockPos pos = new BlockPos(x, y, z);
 
-					if (!world.getPlayers(EntityPlayer.class, p -> p.getDistanceSq(pos) <= 20 * 20).isEmpty()) {
+					if (!world.getPlayers(EntityPlayer.class, p -> p.getDistanceSq(pos) < 20 * 20).isEmpty()) {
 						continue;
 					}
 
@@ -122,19 +151,18 @@ public final class CustomWorldSpawner {
 						for (int i = 0; i < packSize; i++) {
 							moth.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 							world.spawnEntity(moth);
-							
+
 							moth = createEntity(world, pos, enigmothClass);
 						}
 					}
 				}
 			}
 		}
-		
-		
+
 		if (world.getTotalWorldTime() % 20 == 0 && world.rand.nextInt(30) == 0) {
 
 			@SuppressWarnings("unchecked")
-			Class<EntityLiving> ghostrayClass = (Class<EntityLiving>) EntityList.getClassFromName("mod_lavacow:ghostray");//
+			Class<EntityLiving> ghostrayClass = (Class<EntityLiving>) getClassFromName("mod_lavacow:ghostray");//
 
 			for (EntityPlayer player : getPlayers(world)) {
 
@@ -157,7 +185,7 @@ public final class CustomWorldSpawner {
 
 					BlockPos pos = new BlockPos(x, y, z);
 
-					if (!world.getPlayers(EntityPlayer.class, p -> p.getDistanceSq(pos) <= 20 * 20).isEmpty()) {
+					if (!world.getPlayers(EntityPlayer.class, p -> p.getDistanceSq(pos) < 20 * 20).isEmpty()) {
 						continue;
 					}
 
@@ -176,23 +204,28 @@ public final class CustomWorldSpawner {
 					}
 
 					if (isSpawnValid) {
-						
+
 						if ((pos.getY() > 0 && pos.getY() < 255) && world.getChunk(pos).getLightFor(EnumSkyBlock.BLOCK, pos) > 4 || !(world.getWorldTime() > 13500 && world.getWorldTime() < 22500)) {
 							continue;
 						}
-						
+
 						int packSize = world.rand.nextInt(2) + 3;
-						
+
 						for (int i = 0; i < packSize; i++) {
 							ray.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 							world.spawnEntity(ray);
-							
+
 							ray = createEntity(world, pos, ghostrayClass);
 						}
 					}
 				}
 			}
 		}
+	}
+
+	public static Class<? extends Entity> getClassFromName(String p_192839_0_) {
+		EntityEntry entry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(p_192839_0_));
+		return entry == null ? null : entry.getEntityClass();
 	}
 
 	private static EntityLiving createEntity(World world, BlockPos pos, Class<EntityLiving> entity) {
@@ -207,6 +240,6 @@ public final class CustomWorldSpawner {
 	}
 
 	private static List<EntityPlayer> getPlayers(World world) {
-		return world.playerEntities.stream().filter(player -> !player.isSpectator()).collect(Collectors.toList());
+		return world.getPlayers(EntityPlayer.class, player -> !player.isSpectator());// .playerEntities.stream().filter(player -> !player.isSpectator()).collect(Collectors.toList());
 	}
 }

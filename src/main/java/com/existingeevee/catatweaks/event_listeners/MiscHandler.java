@@ -118,7 +118,6 @@ public class MiscHandler {
 			ev.getEntityPlayer().getEntityData().setLong("CataTweaks.SleepPos", 
 					ev.getOriginal().getEntityData().getLong("CataTweaks.SleepPos"));
 		}
-
 	}
 	
 	protected static final Method findValidTeleportLocation$ForgeEventHandlers = ObfuscationReflectionHelper.findMethod(ForgeEventHandlers.class, "findValidTeleportLocation", BlockPos.class, World.class, BlockPos.class);
