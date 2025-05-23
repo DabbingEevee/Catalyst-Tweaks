@@ -25,30 +25,25 @@ import net.minecraft.world.gen.structure.StructureOceanMonument;
 @Mixin(value = LostCityChunkGenerator.class, remap = false)
 public abstract class MixinLostCityChunkGenerator implements IChunkGenerator {
 
-	@Shadow
-	MapGenStronghold strongholdGenerator;
-	@Shadow
-	StructureOceanMonument oceanMonumentGenerator;
-	@Shadow
-	MapGenVillage villageGenerator;
-	@Shadow
-	MapGenMineshaft mineshaftGenerator;
-	@Shadow
-	MapGenScatteredFeature scatteredFeatureGenerator;
-	@Shadow
-	LostWoodlandMansion woodlandMansionGenerator;
-	@Shadow
-	Biome[] biomesForGeneration;
-	@Shadow
-    MapGenBase caveGenerator;
-	@Shadow
-	MapGenBase ravineGenerator;
+	@Shadow private MapGenStronghold strongholdGenerator;
+	@Shadow private StructureOceanMonument oceanMonumentGenerator;
+	@Shadow private MapGenVillage villageGenerator;
+	@Shadow private MapGenMineshaft mineshaftGenerator;
+	@Shadow private MapGenScatteredFeature scatteredFeatureGenerator;
+	@Shadow private LostWoodlandMansion woodlandMansionGenerator;
+	@Shadow private Biome[] biomesForGeneration;
+	@Shadow private MapGenBase caveGenerator;
+	@Shadow private MapGenBase ravineGenerator;
 	
 	/*@Overwrite
 	public Chunk generateChunk(int chunkX, int chunkZ) {
 		return this.generateChunkCustom(chunkX, chunkZ);
 	}*/
 	
+	/**
+	 * @author Eevee
+	 * @reason custom handling
+	 */
 	@Overwrite
 	public Chunk func_185932_a(int chunkX, int chunkZ) {
 		return this.generateChunkCustom(chunkX, chunkZ);

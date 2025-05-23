@@ -2,6 +2,7 @@ package com.existingeevee.catatweaks.renderers.sky;
 
 import com.existingeevee.catatweaks.CatalystTweaks;
 
+import com.existingeevee.catatweaks.mixin.RenderGlobalAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -21,16 +22,16 @@ public class CatalystOverworldSkyRenderer extends IRenderHandler {
 	public static final ThreadLocal<Integer> PASS = ThreadLocal.withInitial(() -> 0);
 	public static final ResourceLocation NETHER_TEXTURES = new ResourceLocation(CatalystTweaks.MODID, "textures/nether.png");
 
-	private CatalystOverworldSkyRenderer() {
-	}
+	private CatalystOverworldSkyRenderer() {}
 
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {
 		RenderGlobal global = mc.renderGlobal;
+		RenderGlobalAccessor globalAccessor = (RenderGlobalAccessor) global;
 		int pass = PASS.get();
 
 		GlStateManager.disableTexture2D();
-		Vec3d vec3d = global.world.getSkyColor(global.mc.getRenderViewEntity(), partialTicks);
+		Vec3d vec3d = globalAccessor.getWorld().getSkyColor(globalAccessor.getMinecraft().getRenderViewEntity(), partialTicks);
 		float f = (float) vec3d.x;
 		float f1 = (float) vec3d.y;
 		float f2 = (float) vec3d.z;
@@ -51,15 +52,15 @@ public class CatalystOverworldSkyRenderer extends IRenderHandler {
 		GlStateManager.enableFog();
 		GlStateManager.color(f, f1, f2);
 
-		if (global.vboEnabled) {
-			global.skyVBO.bindBuffer();
+		if (globalAccessor.getVBOenabled()) {
+			globalAccessor.getSkyVBO().bindBuffer();
 			GlStateManager.glEnableClientState(32884);
 			GlStateManager.glVertexPointer(3, 5126, 12, 0);
-			global.skyVBO.drawArrays(7);
-			global.skyVBO.unbindBuffer();
+			globalAccessor.getSkyVBO().drawArrays(7);
+			globalAccessor.getSkyVBO().unbindBuffer();
 			GlStateManager.glDisableClientState(32884);
 		} else {
-			GlStateManager.callList(global.glSkyList);
+			GlStateManager.callList(globalAccessor.getGlSkyList());
 		}
 
 		GlStateManager.disableFog();
@@ -96,7 +97,7 @@ public class CatalystOverworldSkyRenderer extends IRenderHandler {
 				float f21 = (float) j2 * ((float) Math.PI * 2F) / 16.0F;
 				float f12 = MathHelper.sin(f21);
 				float f13 = MathHelper.cos(f21);
-				bufferbuilder.pos((double) (f12 * 120.0F), (double) (f13 * 120.0F), (double) (-f13 * 40.0F * afloat[3])).color(afloat[0], afloat[1], afloat[2], 0.0F).endVertex();
+				bufferbuilder.pos((f12 * 120.0F), (f13 * 120.0F), (-f13 * 40.0F * afloat[3])).color(afloat[0], afloat[1], afloat[2], 0.0F).endVertex();
 			}
 
 			tessellator.draw();
@@ -112,16 +113,16 @@ public class CatalystOverworldSkyRenderer extends IRenderHandler {
 		GlStateManager.rotate(-90.0F, 0.0F, 1.0F, 0.0F);
 		GlStateManager.rotate(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
 		float f17 = 30.0F;
-		mc.renderEngine.bindTexture(RenderGlobal.SUN_TEXTURES);
+		mc.renderEngine.bindTexture(RenderGlobalAccessor.getSUN_TEXTURES());
 		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos((double) (-f17), 100.0D, (double) (-f17)).tex(0.0D, 0.0D).endVertex();
-		bufferbuilder.pos((double) f17, 100.0D, (double) (-f17)).tex(1.0D, 0.0D).endVertex();
-		bufferbuilder.pos((double) f17, 100.0D, (double) f17).tex(1.0D, 1.0D).endVertex();
-		bufferbuilder.pos((double) (-f17), 100.0D, (double) f17).tex(0.0D, 1.0D).endVertex();
+		bufferbuilder.pos(-f17, 100.0D, -f17).tex(0.0D, 0.0D).endVertex();
+		bufferbuilder.pos(f17, 100.0D, (-f17)).tex(1.0D, 0.0D).endVertex();
+		bufferbuilder.pos(f17, 100.0D, f17).tex(1.0D, 1.0D).endVertex();
+		bufferbuilder.pos((-f17), 100.0D, f17).tex(0.0D, 1.0D).endVertex();
 		tessellator.draw();
 		f17 = 20.0F;
 
-		mc.renderEngine.bindTexture(RenderGlobal.MOON_PHASES_TEXTURES);
+		mc.renderEngine.bindTexture(RenderGlobalAccessor.getMOON_PHASES_TEXTURES());
 		int k1 = world.getMoonPhase();
 		int i2 = k1 % 4;
 		int k2 = k1 / 4 % 2;
@@ -130,10 +131,10 @@ public class CatalystOverworldSkyRenderer extends IRenderHandler {
 		float f24 = (float) (i2 + 1) / 4.0F;
 		float f14 = (float) (k2 + 1) / 2.0F;
 		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos((double) (-f17), -100.0D, (double) f17).tex((double) f24, (double) f14).endVertex();
-		bufferbuilder.pos((double) f17, -100.0D, (double) f17).tex((double) f22, (double) f14).endVertex();
-		bufferbuilder.pos((double) f17, -100.0D, (double) (-f17)).tex((double) f22, (double) f23).endVertex();
-		bufferbuilder.pos((double) (-f17), -100.0D, (double) (-f17)).tex((double) f24, (double) f23).endVertex();
+		bufferbuilder.pos((-f17), -100.0D, f17).tex(f24, f14).endVertex();
+		bufferbuilder.pos(f17, -100.0D, f17).tex(f22, f14).endVertex();
+		bufferbuilder.pos(f17, -100.0D, (-f17)).tex(f22, f23).endVertex();
+		bufferbuilder.pos((-f17), -100.0D, (-f17)).tex(f24, f23).endVertex();
 		tessellator.draw();
 
 		GlStateManager.pushMatrix();
@@ -143,10 +144,10 @@ public class CatalystOverworldSkyRenderer extends IRenderHandler {
 			f17 = 10F;
 			mc.renderEngine.bindTexture(NETHER_TEXTURES);
 			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-			bufferbuilder.pos((double) (-f17), -100.0D, (double) f17).tex(0, 0).endVertex();
-			bufferbuilder.pos((double) f17, -100.0D, (double) f17).tex(1, 0).endVertex();
-			bufferbuilder.pos((double) f17, -100.0D, (double) (-f17)).tex(1, 1).endVertex();
-			bufferbuilder.pos((double) (-f17), -100.0D, (double) (-f17)).tex(0, 1).endVertex();
+			bufferbuilder.pos((-f17), -100.0D, f17).tex(0, 0).endVertex();
+			bufferbuilder.pos(f17, -100.0D, f17).tex(1, 0).endVertex();
+			bufferbuilder.pos(f17, -100.0D, (-f17)).tex(1, 1).endVertex();
+			bufferbuilder.pos((-f17), -100.0D, (-f17)).tex(0, 1).endVertex();
 			tessellator.draw();
 
 		}
@@ -158,15 +159,15 @@ public class CatalystOverworldSkyRenderer extends IRenderHandler {
 		if (f15 > 0.0F) {
 			GlStateManager.color(f15, f15, f15, f15);
 
-			if (global.vboEnabled) {
-				global.starVBO.bindBuffer();
+			if (globalAccessor.getVBOenabled()) {
+				globalAccessor.getStarVBO().bindBuffer();
 				GlStateManager.glEnableClientState(32884);
 				GlStateManager.glVertexPointer(3, 5126, 12, 0);
-				global.starVBO.drawArrays(7);
-				global.starVBO.unbindBuffer();
+				globalAccessor.getStarVBO().drawArrays(7);
+				globalAccessor.getStarVBO().unbindBuffer();
 				GlStateManager.glDisableClientState(32884);
 			} else {
-				GlStateManager.callList(global.starGLCallList);
+				GlStateManager.callList(globalAccessor.getStarGLCallList());
 			}
 		}
 
@@ -183,34 +184,34 @@ public class CatalystOverworldSkyRenderer extends IRenderHandler {
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(0.0F, 12.0F, 0.0F);
 
-			if (global.vboEnabled) {
-				global.sky2VBO.bindBuffer();
+			if (globalAccessor.getVBOenabled()) {
+				globalAccessor.getSky2VBO().bindBuffer();
 				GlStateManager.glEnableClientState(32884);
 				GlStateManager.glVertexPointer(3, 5126, 12, 0);
-				global.sky2VBO.drawArrays(7);
-				global.sky2VBO.unbindBuffer();
+				globalAccessor.getSky2VBO().drawArrays(7);
+				globalAccessor.getSky2VBO().unbindBuffer();
 				GlStateManager.glDisableClientState(32884);
 			} else {
-				GlStateManager.callList(global.glSkyList2);
+				GlStateManager.callList(globalAccessor.getGlSkyList2());
 			}
 
 			GlStateManager.popMatrix();
 			float f19 = -((float) (d3 + 65.0D));
 			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-			bufferbuilder.pos(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
@@ -228,7 +229,7 @@ public class CatalystOverworldSkyRenderer extends IRenderHandler {
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(0.0F, -((float) (d3 - 16.0D)), 0.0F);
-		GlStateManager.callList(global.glSkyList2);
+		GlStateManager.callList(globalAccessor.getGlSkyList2());
 		GlStateManager.popMatrix();
 		GlStateManager.enableTexture2D();
 		GlStateManager.depthMask(true);

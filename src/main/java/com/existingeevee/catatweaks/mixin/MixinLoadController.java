@@ -24,8 +24,7 @@ import net.minecraftforge.fml.common.ModContainer;
 @Mixin(value = LoadController.class, remap = false)
 public abstract class MixinLoadController {
 
-	@Shadow
-	private Loader loader;
+	@Shadow private Loader loader;
 
 	@Inject(method = "distributeStateMessage(Lnet/minecraftforge/fml/common/LoaderState;[Ljava/lang/Object;)V", at = @At("HEAD"))
 	private void catalyst_tweaks$HEAD_Inject$distributeStateMessage(LoaderState state, Object[] eventData, CallbackInfo ci) throws Throwable {

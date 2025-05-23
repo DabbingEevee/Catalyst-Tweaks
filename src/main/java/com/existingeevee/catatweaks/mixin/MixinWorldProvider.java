@@ -3,6 +3,7 @@ package com.existingeevee.catatweaks.mixin;
 import java.util.Iterator;
 import java.util.Random;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,17 +30,10 @@ import net.minecraftforge.client.IRenderHandler;
 @Mixin(WorldProvider.class)
 public abstract class MixinWorldProvider {
 
-	@Shadow(remap = false)
-	abstract int getDimension();
-
-	@Shadow
-	float[] lightBrightnessTable;
-
-	@Shadow(remap = false)
-    abstract void setAllowedSpawnTypes(boolean allowHostile, boolean allowPeaceful);
-	
-	@Shadow()
-	World world;
+	@Shadow(remap = false) public abstract int getDimension();
+	@Final @Shadow protected float[] lightBrightnessTable;
+	@Shadow(remap = false) public abstract void setAllowedSpawnTypes(boolean allowHostile, boolean allowPeaceful);
+	@Shadow protected World world;
 
 	@Inject(at = @At(value = "HEAD"), method = "getSkyRenderer", remap = false, cancellable = true)
 	public void catalyst_tweaks$HEAD_Inject$getSkyRenderer(CallbackInfoReturnable<IRenderHandler> ci) {

@@ -1,8 +1,14 @@
 {
-    "compatibilityLevel": "JAVA_8",
-    "package": "com.existingeevee.catatweaks.mixin",
-    "refmap": "refmap.catalyst_tweaks.json",
-    "mixins": ["MixinLoadController"],
-    "client": ["MixinRenderGlobal", "MixinWorldProvider"],
-    "server": []
+  "compatibilityLevel": "JAVA_8",
+  "package": "com.existingeevee.catatweaks.mixin",
+  "refmap": "refmap.catalyst_tweaks.json",
+  "mixins": [
+    "MixinLoadController"
+  ],
+  "client": [
+    "MixinRenderGlobal",
+    "MixinWorldProvider",
+    "RenderGlobalAccessor"
+  ],
+  "server": []
 }

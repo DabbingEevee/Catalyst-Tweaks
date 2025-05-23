@@ -1,2 +1,2 @@
-# forge-mixin-example
-An example for using Mixin in Minecraft Forge
+# Catalyst Tweaks
+Some tweaks made for the Catalyst: Parasites modpack.
