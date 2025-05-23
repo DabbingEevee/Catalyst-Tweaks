@@ -34,18 +34,13 @@ public abstract class MixinLostCityChunkGenerator implements IChunkGenerator {
 	@Shadow private Biome[] biomesForGeneration;
 	@Shadow private MapGenBase caveGenerator;
 	@Shadow private MapGenBase ravineGenerator;
-	
-	/*@Overwrite
-	public Chunk generateChunk(int chunkX, int chunkZ) {
-		return this.generateChunkCustom(chunkX, chunkZ);
-	}*/
-	
+
 	/**
 	 * @author Eevee
 	 * @reason custom handling
 	 */
 	@Overwrite
-	public Chunk func_185932_a(int chunkX, int chunkZ) {
+	public Chunk generateChunk(int chunkX, int chunkZ) {
 		return this.generateChunkCustom(chunkX, chunkZ);
 	}
  
