@@ -1,7 +1,7 @@
 {
   "compatibilityLevel": "JAVA_8",
   "package": "com.existingeevee.catatweaks.mixin",
-  "refmap": "refmap.catalyst_tweaks.json",
+  "refmap": "mixins.catalyst_tweaks.refmap.json",
   "mixins": [
     "vanilla.MixinLoadController"
   ],
