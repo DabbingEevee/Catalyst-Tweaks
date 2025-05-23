@@ -3,12 +3,12 @@
   "package": "com.existingeevee.catatweaks.mixin",
   "refmap": "refmap.catalyst_tweaks.json",
   "mixins": [
-    "MixinLoadController"
+    "vanilla.MixinLoadController"
   ],
   "client": [
-    "MixinRenderGlobal",
-    "MixinWorldProvider",
-    "RenderGlobalAccessor"
+    "vanilla.MixinRenderGlobal",
+    "vanilla.MixinWorldProvider",
+    "vanilla.RenderGlobalAccessor"
   ],
   "server": []
 }

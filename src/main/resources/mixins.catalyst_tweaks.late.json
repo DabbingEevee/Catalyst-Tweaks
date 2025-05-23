@@ -2,7 +2,13 @@
     "compatibilityLevel": "JAVA_8",
     "package": "com.existingeevee.catatweaks.mixin",
     "refmap": "refmap.catalyst_tweaks.json",
-    "mixins": ["MixinHelper", "MixinForgeEventHandlers", "MixinLostCityChunkGenerator"],
+    "mixins": [
+        "midnight.MixinHelper",
+        "lostcities.MixinForgeEventHandlers",
+        "lostcities.MixinLostCityChunkGenerator",
+        "harkenscytheresharpened.MixinHSEnchantmentWillingness",
+        "harkenscytheresharpened.MixinHSEnchantmentReapingFrenzy"
+    ],
     "client": [],
     "server": []
 }

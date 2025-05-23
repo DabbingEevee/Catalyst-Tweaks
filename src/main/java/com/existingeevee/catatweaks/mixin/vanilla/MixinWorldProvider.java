@@ -1,4 +1,4 @@
-package com.existingeevee.catatweaks.mixin;
+package com.existingeevee.catatweaks.mixin.vanilla;
 
 import java.util.Iterator;
 import java.util.Random;

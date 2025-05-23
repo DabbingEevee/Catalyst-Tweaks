@@ -1,4 +1,4 @@
-package com.existingeevee.catatweaks.mixin;
+package com.existingeevee.catatweaks.mixin.lostcities;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;

@@ -1,4 +1,4 @@
-package com.existingeevee.catatweaks.mixin;
+package com.existingeevee.catatweaks.mixin.midnight;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

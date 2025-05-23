@@ -2,7 +2,7 @@ package com.existingeevee.catatweaks.renderers.sky;
 
 import com.existingeevee.catatweaks.CatalystTweaks;
 
-import com.existingeevee.catatweaks.mixin.RenderGlobalAccessor;
+import com.existingeevee.catatweaks.mixin.vanilla.RenderGlobalAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.BufferBuilder;

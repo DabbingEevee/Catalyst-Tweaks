@@ -1,4 +1,4 @@
-package com.existingeevee.catatweaks.mixin;
+package com.existingeevee.catatweaks.mixin.vanilla;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;

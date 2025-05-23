@@ -1,4 +1,4 @@
-package com.existingeevee.catatweaks.mixin;
+package com.existingeevee.catatweaks.mixin.vanilla;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
