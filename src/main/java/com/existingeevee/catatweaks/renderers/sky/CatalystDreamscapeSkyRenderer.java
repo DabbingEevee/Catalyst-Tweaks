@@ -2,6 +2,7 @@ package com.existingeevee.catatweaks.renderers.sky;
 
 import com.existingeevee.catatweaks.CatalystTweaks;
 
+import com.existingeevee.catatweaks.mixin.vanilla.RenderGlobalAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -25,6 +26,7 @@ public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
 	@Override
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {
 		RenderGlobal global = mc.renderGlobal;
+		RenderGlobalAccessor globalAccessor = (RenderGlobalAccessor) global;
 		
         GlStateManager.disableFog();
         GlStateManager.disableAlpha();
@@ -79,15 +81,15 @@ public class CatalystDreamscapeSkyRenderer extends IRenderHandler {
 			for (int i = 0; i < 3; i++) {
 				GlStateManager.pushMatrix();
 				GlStateManager.rotate(30 * i, 1, 1, 0);
-				if (global.vboEnabled) {
-					global.starVBO.bindBuffer();
+				if (globalAccessor.getVBOenabled()) {
+					globalAccessor.getStarVBO().bindBuffer();
 					GlStateManager.glEnableClientState(32884);
 					GlStateManager.glVertexPointer(3, 5126, 12, 0);
-					global.starVBO.drawArrays(7);
-					global.starVBO.unbindBuffer();
+					globalAccessor.getStarVBO().drawArrays(7);
+					globalAccessor.getStarVBO().unbindBuffer();
 					GlStateManager.glDisableClientState(32884);
 				} else {
-					GlStateManager.callList(global.starGLCallList);
+					GlStateManager.callList(globalAccessor.getStarGLCallList());
 				}
 				GlStateManager.popMatrix();
 			}
