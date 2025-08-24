@@ -1,0 +1,26 @@
+{
+  "presence": {
+    "category": "ambient",
+    "sounds": [
+      "catalyst_tweaks:presence"
+    ]
+  },
+  "presence_start": {
+    "category": "ambient",
+    "sounds": [
+      "catalyst_tweaks:presence_start"
+    ]
+  },
+  "presence_middle": {
+    "category": "ambient",
+    "sounds": [
+      "catalyst_tweaks:presence_middle"
+    ]
+  },
+  "presence_end": {
+    "category": "ambient",
+    "sounds": [
+      "catalyst_tweaks:presence_end"
+    ]
+  }
+}
