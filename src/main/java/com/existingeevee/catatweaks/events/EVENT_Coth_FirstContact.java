@@ -22,7 +22,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -90,13 +90,13 @@ public class EVENT_Coth_FirstContact extends EventBase {
 
     @Override
     public void serverEventEnd() {
-        if (this.player != null) {
+        if (this.player != null && this.effects != null) {
             //this.player.clearActivePotions();
             for (PotionEffect potionEffect : this.effects) {
                 this.player.addPotionEffect(potionEffect);
             }
+            effects.clear();
         }
-        effects.clear();
     }
 
     @Override
@@ -221,12 +221,12 @@ public class EVENT_Coth_FirstContact extends EventBase {
     }
 
     @Override
-    public boolean disableAttack(AttackEntityEvent event) {
+    public boolean disableAttack(LivingAttackEvent event) {
         return true;
     }
 
     @Override
-    public boolean disableGetDamage(AttackEntityEvent event) {
+    public boolean disableGetDamage(LivingAttackEvent event) {
         return true;
     }
 
