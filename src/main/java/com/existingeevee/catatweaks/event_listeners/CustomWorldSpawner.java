@@ -30,77 +30,77 @@ public final class CustomWorldSpawner {
 
 		World world = event.world;
 
-		if (world.getTotalWorldTime() % 20 == 0 && world.rand.nextInt(4) == 0) {
-
-			@SuppressWarnings("unchecked")
-			Class<EntityLiving> weepingAngelClass = (Class<EntityLiving>) getClassFromName("weeping-angels:weepingangel");
-
-			if (debugPrintln)
-				System.out.println("Attempting angel spawn");
-
-			for (EntityPlayer player : getPlayers(world)) {
-
-				if (debugPrintln)
-					System.out.println("Attempting angel spawn for player: " + player.getUniqueID());
-
-				if (weepingAngelClass == null)
-					continue;
-
-				int amount = world.getEntities(weepingAngelClass, e -> true).size();
-
-				if (amount < 120) {
-
-					if (debugPrintln)
-						System.out.println("Calculating angel spawn pos");
-
-					double r = Math.random() * 5 + 35;
-					double theta = Math.random() * Math.PI * 2;
-
-					double xOff = Math.cos(theta) * r;
-					double zOff = Math.sin(theta) * r;
-
-					int x = (int) Math.round(player.posX + xOff);
-					int z = (int) Math.round(player.posZ + zOff);
-
-					int surfaceY = 255;
-					while (world.isAirBlock(new BlockPos(x, surfaceY, z)) && surfaceY >= 0) {
-						surfaceY--;
-					}
-
-					surfaceY++;
-
-					BlockPos pos = new BlockPos(x, surfaceY, z);
-					if (Math.abs(surfaceY - player.posY) > 25 || world.getChunk(pos).getLightFor(EnumSkyBlock.BLOCK, pos) > 0 || !(world.getWorldTime() > 13500 && world.getWorldTime() < 22500)) {
-
-						if (debugPrintln)
-							System.out.println("Invalid spawn position. aborting");
-						continue;
-					} else {
-						if (!world.getPlayers(EntityPlayer.class, p -> p.getDistanceSq(pos) < 35 * 35).isEmpty()) {
-							if (debugPrintln)
-								System.out.println("Calculated spawn pos too close to players. aborting");
-							continue;
-						}
-
-						EntityLiving angel = createEntity(world, pos, weepingAngelClass);
-						if (world.getBlockState(pos.down()).canEntitySpawn(angel)) {
-							angel.onInitialSpawn(world.getDifficultyForLocation(pos), null);
-							world.spawnEntity(angel);
-
-							if (debugPrintln)
-								System.out.println("angel spawn successful");
-
-						} else {
-							if (debugPrintln)
-								System.out.println("calculated spawn pos cannot place at position. aborting");
-						}
-					}
-				} else {
-					if (debugPrintln)
-						System.out.println("Too many angels. aborting.");
-				}
-			}
-		}
+//		if (world.getTotalWorldTime() % 20 == 0 && world.rand.nextInt(4) == 0) {
+//
+//			@SuppressWarnings("unchecked")
+//			Class<EntityLiving> weepingAngelClass = (Class<EntityLiving>) getClassFromName("weeping-angels:weepingangel");
+//
+//			if (debugPrintln)
+//				System.out.println("Attempting angel spawn");
+//
+//			for (EntityPlayer player : getPlayers(world)) {
+//
+//				if (debugPrintln)
+//					System.out.println("Attempting angel spawn for player: " + player.getUniqueID());
+//
+//				if (weepingAngelClass == null)
+//					continue;
+//
+//				int amount = world.getEntities(weepingAngelClass, e -> true).size();
+//
+//				if (amount < 120) {
+//
+//					if (debugPrintln)
+//						System.out.println("Calculating angel spawn pos");
+//
+//					double r = Math.random() * 5 + 35;
+//					double theta = Math.random() * Math.PI * 2;
+//
+//					double xOff = Math.cos(theta) * r;
+//					double zOff = Math.sin(theta) * r;
+//
+//					int x = (int) Math.round(player.posX + xOff);
+//					int z = (int) Math.round(player.posZ + zOff);
+//
+//					int surfaceY = 255;
+//					while (world.isAirBlock(new BlockPos(x, surfaceY, z)) && surfaceY >= 0) {
+//						surfaceY--;
+//					}
+//
+//					surfaceY++;
+//
+//					BlockPos pos = new BlockPos(x, surfaceY, z);
+//					if (Math.abs(surfaceY - player.posY) > 25 || world.getChunk(pos).getLightFor(EnumSkyBlock.BLOCK, pos) > 0 || !(world.getWorldTime() > 13500 && world.getWorldTime() < 22500)) {
+//
+//						if (debugPrintln)
+//							System.out.println("Invalid spawn position. aborting");
+//						continue;
+//					} else {
+//						if (!world.getPlayers(EntityPlayer.class, p -> p.getDistanceSq(pos) < 35 * 35).isEmpty()) {
+//							if (debugPrintln)
+//								System.out.println("Calculated spawn pos too close to players. aborting");
+//							continue;
+//						}
+//
+//						EntityLiving angel = createEntity(world, pos, weepingAngelClass);
+//						if (world.getBlockState(pos.down()).canEntitySpawn(angel)) {
+//							angel.onInitialSpawn(world.getDifficultyForLocation(pos), null);
+//							world.spawnEntity(angel);
+//
+//							if (debugPrintln)
+//								System.out.println("angel spawn successful");
+//
+//						} else {
+//							if (debugPrintln)
+//								System.out.println("calculated spawn pos cannot place at position. aborting");
+//						}
+//					}
+//				} else {
+//					if (debugPrintln)
+//						System.out.println("Too many angels. aborting.");
+//				}
+//			}
+//		}
 
 		if (world.getTotalWorldTime() % 20 == 0 && world.rand.nextInt(15) == 0) {
 
