@@ -7,7 +7,8 @@
         "lostcities.MixinForgeEventHandlers",
         "lostcities.MixinLostCityChunkGenerator",
         "harkenscytheresharpened.MixinHSEnchantmentWillingness",
-        "harkenscytheresharpened.MixinHSEnchantmentReapingFrenzy"
+        "harkenscytheresharpened.MixinHSEnchantmentReapingFrenzy",
+        "limelib.MixinCommonBlockContainer"
     ],
     "client": [],
     "server": []

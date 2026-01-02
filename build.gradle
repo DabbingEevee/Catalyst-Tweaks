@@ -61,6 +61,7 @@ dependencies {
     implementation fg.deobf("curse.maven:lostcities-269024:2861574")
     implementation fg.deobf("curse.maven:game-stages-268655:2951840")
     implementation fg.deobf("curse.maven:harken-scythe-resharpened-1163747:6431609")
+    implementation fg.deobf("curse.maven:limelib-250711:2567363")
 }
 
 mixin {
